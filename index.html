@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>KONGBORY FOOD</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script>
+      $(function(){
+
+          // menu
+          $(".gnb>li").on({
+            mouseenter: function(){
+              $(".sub_menu").stop().slideDown(300);
+            },
+            mouseleave: function(){
+              $(".sub_menu").stop().slideUp(300);
+            },
+          });
+
+         
+          // dot+slide
+            let listWidth = $(".visual_list>li").outerWidth();
+  
+            $(".visual_list>li:first").clone(true).insertAfter(".visual_list>li:last");
+            $(".visual_list").css("width", listWidth * $(".visual_list>li").length );
+  
+            $(".dot>li").click(function(){
+                $(this).addClass("on").siblings("li").removeClass("on");
+                let index = $(this).index();
+                $(".visual_list").animate({left: index * -1200}, 2000);
+            });
+           
+            let num = 0; 
+  
+            function play(){
+  
+               num++;
+               $(".dot>li").eq(num%3).addClass("on").siblings("li").removeClass("on");
+
+               $(".visual_list").animate({left: num * -1200}, 1000, function(){
+                     if ( num == 3 ) {
+                          num = 0;
+                          $(".visual_list").css("left","0px");
+                     }
+               });
+            }
+  
+            let move = setInterval(play, 2000);
+              $(".dot>li").mouseenter(function(){
+                 clearInterval(move);
+                 
+            });
+            $(".dot>li").mouseleave(function(){
+                 move = setInterval(play, 2000);
+            });
+  
+            move;
+
+           // ajax 연동
+           $.ajax({
+              url: "test.json",
+              dataType: "json",
+              success: function(data){
+                console.log(data);
+                let li = "";
+                $.each(data, function(index, obj){
+                   li += "<li>" + obj.title + "</li>";
+                });
+                $(".notice").append(li);
+              }
+           });
+
+           // popup
+           $("#visual>button").click(function(){
+             $(".popup").css("display","block");
+           });
+           $(".popup>button").click(function(){
+             $(".popup").css("display","none")
+           });
+        });
+      </script>
+</head>
+<body>
+    <div id="wrap">
+        <header>
+          <h1 class="logo">
+            <a href="#"><img src="images/logo.jpg" alt="로고"></a>
+            <span class="logo_txt">KONGBORY FOOD</span>
+          </h1>
+          <nav>
+          <ul class="gnb">
+            <li><a href="#">수제사료</a>
+              <ul class="sub_menu">
+                <li><a href="#">소형견</a></li>
+                <li><a href="#">중형견</a></li>
+                <li><a href="#">대형견</a></li>
+                <li><a href="#">습식사료</a></li>
+            </ul>
+            </li>
+            <li><a href="#">수제간식</a>
+              <ul class="sub_menu">
+                <li><a href="#">껌</a></li>
+                <li><a href="#">져키</a></li>
+                <li><a href="#">육포</a></li>
+                <li><a href="#">큐브</a></li>
+                <li><a href="#">테린</a></li>
+              </ul>
+            </li>
+            <li><a href="#">프리미엄</a>
+              <ul class="sub_menu">
+                <li><a href="#">퓨레</a></li>
+                <li><a href="#">영양식</a></li>
+                <li><a href="#">파우더</a></li>
+              </ul>
+            </li>
+            <li><a href="#">베이커리</a>
+              <ul class="sub_menu">
+                <li><a href="#">치킨</a></li>
+                <li><a href="#">쿠키</a></li>
+                <li><a href="#">케이크</a></li>
+                <li><a href="#">피자</a></li>
+              </ul>
+            </li>
+            <li><a href="#">주문제작</a>
+              <ul class="sub_menu">
+                <li><a href="#">제작양식</a></li>  
+              </ul>
+            </li>
+          </ul>
+          <ul class="top_menu">
+              <li><a href="#">LOGIN</a></li>
+              <li><a href="#">JOIN</a></li>
+              <li><a href="#">ORDER</a></li>
+              <li><a href="#"><i class="fas fa-search"></i></a></li>
+              <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
+          </ul>
+          </nav>
+        </header>
+        <div id="visual">
+          <ul class="visual_list">
+           <li>
+            <img src="images/visual.jpg" alt="비주얼"></li>
+           <li><img src="images/visual2.jpg" alt="비주얼2"></li>
+           <li><img src="images/visual3.jpg" alt="비주얼3"></li>
+          </ul>
+          <ul class="dot">
+            <li class="on">1</li>
+            <li>2</li>
+            <li>3</li>
+        </ul>
+          <h3>SUPER ORGANIC FOOD</h3>
+          <h2 class="subcopy">유기농 신메뉴 출시</h2>
+         <button><a href="#">바로가기</a></button>
+          <div class="popup">
+            <h1>유기농 신메뉴 출시기념</h1>
+            <h2><span>10 ~ 15%</span> 할인혜택을 누리세요</h2>
+            <h4>유기농 신메뉴 출시기념으로 신메뉴 주문시,<br>
+               <span>2021. 7. 1 ~ 7. 31</span> 한달동안 <br>
+               <span>10~15%</span>의 할인된 금액으로 만나보실 수 있습니다.</h4>
+            <button>x 닫기</button>
+        </div>
+        </div>
+        <div id="content">
+          <section>
+            <h2 class="title">WEEK BEST</h2>
+            <ul class="bestmenu clear">
+              <li><a href="#">
+                <img src="images/best1.jpg" alt="치킨"></a>
+                <span class="icon">1</span>
+                <h3>치킨봉 & 치킨무 set</h3>
+                <p>9,500 원</p>
+              </li>
+              <li><a href="#">
+                <img src="images/best2.jpg" alt="쿠키"></a>
+                <span class="icon">2</span>
+                <h3>바나나 쿠키</h3>
+                <p>6,500 원</p>
+              </li>
+              <li><a href="#">
+                <img src="images/best3.jpg" alt="도넛"></a>
+                <span class="icon">3</span>
+                <h3>심슨 도넛</h3>
+                <p>7,000 원</p>
+              </li>
+              <li><a href="#">
+                <img src="images/best4.jpg" alt="치즈볼"></a>
+                <span class="icon">4</span>
+                <h3>뿌링 치즈볼</h3>
+                <p>8,000 원</p>
+              </li>
+            </ul>
+          </section>
+          <section>
+            <div class="left">
+            <h2 class="title">NEW</h2>
+            <ul class="newmenu clear">
+              <li><a href="#">
+                <img src="images/new1.jpg" alt="케이크"></a>
+                <h3>레터링 케이크(주문제작)</h3>
+              </li>
+              <li><a href="#">
+                <img src="images/new2.jpg" alt="피자"></a>
+                <h3>불고기 크러스트피자</h3>
+              </li>
+            </ul>
+          </div>
+          <div class="right">
+            <h2 class="title">NOTICE</h2>
+             <ul class="notice clear"> 
+              <!-- <li><a href="#">주문제작 방식 안내</a></li>
+              <li><a href="#">입고지연</a></li>
+              <li><a href="#">금액별 사은품 & 혜택 안내</a></li>
+              <li><a href="#">시즌 한정 메뉴 안내</a></li> -->
+            </ul> 
+          </div>
+          </section>
+        </div>
+        <footer>
+          <p>Copyright Kongbory corp. All Rights Reserved</p>
+        </footer>
+    </div>
+</body>
+</html>
